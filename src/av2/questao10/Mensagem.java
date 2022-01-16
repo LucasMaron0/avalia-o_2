@@ -8,8 +8,6 @@ public class Mensagem {
 	private String mensagem;
 	private String status;
 
-
-
 	public Mensagem(String mensagem) {
 		super();
 		this.mensagem = mensagem;

@@ -10,12 +10,12 @@ public class Produto     {
 	private int id;
 	private String nome;
 	private String descricao;
-	private String desconto;
+	private Double desconto;
 	private Date dataInicio;
 
 
 
-	public Produto(int id, String nome, String descricao, String desconto, Date dataInicio) {
+	public Produto(int id, String nome, String descricao, Double desconto, Date dataInicio) {
 		super();
 		this.id  = id;
 		this.nome = nome;
@@ -25,20 +25,18 @@ public class Produto     {
 	}
 	public static void inputProduto (ProdutoDAO dao, int id) throws SQLException  {
 
-		Scanner input = new Scanner(System.in);
-		String nome, desc, desconto,data;
+		InputControl  ic = new InputControl ();
+		String nome, desc, data;
+		double desconto= 0.0;
 		Date dataFormatada = new Date(0);
 
 		if (id < 0) {
 			autoGenerate(dao);
-
 			System.out.println("Crie um produto:\n");
-
+			
 			boolean validação = false;
-
 			while (!validação) { 
-				System.out.println("\nID do produto: ");
-				id= Integer.valueOf(input.nextLine());
+				id = ic.inputID();
 				if(dao.validarId(id)) {
 					System.out.println("ID: "+id+" já exsite, tente outro.");
 				}else {
@@ -47,28 +45,11 @@ public class Produto     {
 			}
 		}
 
-		System.out.println("Nome do produto: ");
-		nome= input.nextLine();
+		nome = ic.inputNome();
+		desc = ic.inputDesc();
+		desconto = ic.inputDesconto();
+		dataFormatada = ic.inputData();
 
-		System.out.println("\nDescrição do produto: ");
-		desc= input.nextLine();
-
-		System.out.println("\nDesconto: ");
-		desconto= input.nextLine();
-
-		boolean validaçãoData = false;
-		
-		while(!validaçãoData) {
-			try{
-				System.out.println("\nData (yyyy-MM-dd): ");
-				data= input.nextLine();
-				dataFormatada = java.sql.Date.valueOf(data);
-				validaçãoData = true;
-			}catch (IllegalArgumentException e) {
-				System.out.println("DATA INVALIDA, DIGITE NOVAMENTE NO FORMATO CORRETO. ");
-			}
-		}
-		
 		Produto produto = new Produto(id, nome,desc,desconto, dataFormatada);
 		dao.salvar(produto);
 
@@ -88,7 +69,7 @@ public class Produto     {
 						randomId,
 						"nomeAuto",
 						"descAuto",
-						"descontoAuto",
+						0.0,
 						new Date(randomId)));
 				System.out.println("Produto gerado automaticamente id: "+randomId);
 			}else {				
@@ -119,10 +100,10 @@ public class Produto     {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public String getDesconto() {
+	public Double getDesconto() {
 		return desconto;
 	}
-	public void setDesconto(String desconto) {
+	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
 	}
 	public Date getDataInicio() {

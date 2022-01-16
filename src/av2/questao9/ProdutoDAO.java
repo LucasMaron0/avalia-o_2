@@ -1,13 +1,14 @@
 package av2.questao9;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import connections.ConnectionFactory;
+import av2.connections.ConnectionFactory;
 
 public class ProdutoDAO {
 
@@ -33,7 +34,7 @@ public class ProdutoDAO {
 			pstm.setInt(1, produto.getId());
 			pstm.setString(2, produto.getNome());
 			pstm.setString(3, produto.getDescricao());
-			pstm.setString(4, produto.getDesconto());
+			pstm.setDouble(4, produto.getDesconto());
 			pstm.setDate(5, produto.getDataInicio());
 
 			pstm.execute();
@@ -43,34 +44,24 @@ public class ProdutoDAO {
 			System.out.println(e.getMessage());
 		}
 
-
 	}
 
 
 	public void atualizar (ProdutoDAO dao) throws SQLException {
 
-
+		InputControl ic = new InputControl();
 		Scanner input = new Scanner(System.in);
-
 		String sql = "";
 
-		System.out.println("digite o ID do produto que deseja alterar: ");
-		int id  = Integer.valueOf(input.nextLine());					
+		System.out.println(" ---ATUALIZAR PRODUTO--- ");
+		int id  = ic.inputID();				
 
 		if (!validarId(id)) {
 			System.out.println("ID inexistente, adicione um Produto com este ID: ");
 			Produto.inputProduto(dao, id);												
 		}else {
-
-			System.out.println("Que campo deseja alterar: ");
-
-			System.out.println(" 1-nome/ 2-descrição/ 3-desconto/ 4-data");
-			int campo  = Integer.valueOf(input.nextLine());
-
-			System.out.println("Novo valor: ");
-			String mudança = input.nextLine();
-
-
+			int campo  = ic.inputCodigoAlteracao();
+			
 			if(campo ==1 ) {
 				sql = "UPDATE PRODUTO SET NOME = ? where id = ?";
 			}
@@ -84,11 +75,28 @@ public class ProdutoDAO {
 				sql = "UPDATE PRODUTO SET DATA = ? where id = ?";
 			}
 
-
 			try (PreparedStatement pstm = connection.prepareStatement(sql)){		
 
-				pstm.setString(1, mudança );
+				System.out.println("Novo valor: ");
+				if(campo ==1 ) {					
+					String nome = ic.inputNome();
+					pstm.setString(1, nome );
+				}
+				if(campo ==2 ) {					
+					String desc = ic.inputDesc();
+					pstm.setString(1, desc );
+				}
+				if(campo ==3 ) {				
+					Double desconto = ic.inputDesconto();
+					pstm.setDouble(1, desconto );		
+				}
+				if(campo ==4 ) {
+					Date data = ic.inputData();
+					pstm.setDate(1, data );					
+				}
+				
 				pstm.setInt(2, id);
+				
 				int verificarModificadas= pstm.executeUpdate();
 
 				if (verificarModificadas == 0) {
@@ -107,13 +115,12 @@ public class ProdutoDAO {
 
 	public void deletar () throws SQLException {
 
+		InputControl ic = new InputControl();
 		String sql = "DELETE FROM PRODUTO WHERE id= ?";
 
-		Scanner input = new Scanner(System.in);
-		System.out.println("digite o ID do produto que deseja deletar: ");
-		int id  = Integer.valueOf(input.nextLine());
 
-
+		System.out.println("---DELETAR PRODUTO POR ID--- ");
+		int id  = ic.inputID();
 
 		try (PreparedStatement pstm = connection.prepareStatement(sql)){		
 			pstm.setInt(1, id);		
@@ -163,9 +170,9 @@ public class ProdutoDAO {
 							rst.getInt(1),
 							rst.getString(2),
 							rst.getString(3),
-							rst.getString(4),
+							rst.getDouble(4),
 							rst.getDate(5));
-					
+
 					produtos.add(produto);
 				}
 			}catch (SQLException e) {
@@ -181,7 +188,7 @@ public class ProdutoDAO {
 			System.out.println("\nID: "+ p.getId());
 			System.out.println("NOME: "+ p.getNome());
 			System.out.println("DESCRIÇÃO : "+ p.getDescricao());
-			System.out.println("DESCONTO: "+ p.getDesconto());
+			System.out.println("DESCONTO: "+ p.getDesconto() + "%");
 			System.out.println("DATA: "+ p.getDataInicio());
 		}
 	}

@@ -1,4 +1,4 @@
-package connections;
+package av2.connections;
 
 import java.sql.Connection;
 import java.sql.SQLException;

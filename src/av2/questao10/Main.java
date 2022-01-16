@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import connections.ConnectionFactory;
+import av2.connections.ConnectionFactory;
 
 public class Main {
 
