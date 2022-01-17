@@ -3,7 +3,7 @@ package av2.questao9;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Random;
-import java.util.Scanner;
+
 
 public class Produto     {
 
@@ -58,7 +58,7 @@ public class Produto     {
 		Random random = new Random();
 
 		for (int i = 0; i<3; i++) {
-			int randomId = random.nextInt(1000);
+			int randomId = random.nextInt(1, Integer.MAX_VALUE);
 			double randomDesconto= random.nextDouble(100.00);
 			if(!dao.validarId(randomId)) {
 				dao.salvar(new Produto(

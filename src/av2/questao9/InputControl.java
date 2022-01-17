@@ -23,7 +23,11 @@ public class InputControl {
 			try {
 				System.out.println("\nID do produto: ");
 				id= Integer.valueOf(input.nextLine());
-				validação = true;
+				if(id > 0) {
+					validação = true;
+				}else {
+					System.out.println("O ID deve ser positivo");
+				}
 			} catch (NumberFormatException e) {
 				System.out.println("Digite um número válido");
 			}
