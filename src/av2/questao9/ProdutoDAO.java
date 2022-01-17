@@ -61,7 +61,7 @@ public class ProdutoDAO {
 			Produto.inputProduto(dao, id);												
 		}else {
 			int campo  = ic.inputCodigoAlteracao();
-			
+
 			if(campo ==1 ) {
 				sql = "UPDATE PRODUTO SET NOME = ? where id = ?";
 			}
@@ -72,7 +72,7 @@ public class ProdutoDAO {
 				sql = "UPDATE PRODUTO SET DESCONTO = ? where id = ?";
 			}
 			if(campo ==4 ) {
-				sql = "UPDATE PRODUTO SET DATA = ? where id = ?";
+				sql = "UPDATE PRODUTO SET DATAINICIO = ? where id = ?";
 			}
 
 			try (PreparedStatement pstm = connection.prepareStatement(sql)){		
@@ -94,9 +94,9 @@ public class ProdutoDAO {
 					Date data = ic.inputData();
 					pstm.setDate(1, data );					
 				}
-				
+
 				pstm.setInt(2, id);
-				
+
 				int verificarModificadas= pstm.executeUpdate();
 
 				if (verificarModificadas == 0) {
@@ -117,7 +117,6 @@ public class ProdutoDAO {
 
 		InputControl ic = new InputControl();
 		String sql = "DELETE FROM PRODUTO WHERE id= ?";
-
 
 		System.out.println("---DELETAR PRODUTO POR ID--- ");
 		int id  = ic.inputID();

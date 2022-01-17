@@ -39,7 +39,12 @@ public class InputControl {
 			try {
 				System.out.println("\nDesconto: ");
 				desconto= Double.valueOf(input.nextLine());
-				validaçãoDesconto= true;
+				if (desconto >= 0 && desconto <= 100) {
+					validaçãoDesconto= true;
+				}else {
+					System.out.println("digite um número válido(0-100): ");
+				}
+
 			} catch (NumberFormatException e) {
 				System.out.println("digite um número válido: ");
 			}
@@ -62,7 +67,6 @@ public class InputControl {
 			}
 		}
 		return dataFormatada;
-
 	}
 
 	public String inputNome () {
@@ -71,7 +75,6 @@ public class InputControl {
 		nome= input.nextLine();
 		return nome;
 	}
-
 
 	public String inputDesc() {
 		String desc= "";

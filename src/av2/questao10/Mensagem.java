@@ -15,8 +15,8 @@ public class Mensagem {
 		String patternFeliz = "\\:\\-\\)";
 		String patternTriste = "\\:\\-\\(";
 			
-		long contadorFeliz =  contarRepetições(patternFeliz);
-		long contadorTriste = contarRepetições(patternTriste);
+		int contadorFeliz =  contarRepetições(patternFeliz);
+		int contadorTriste = contarRepetições(patternTriste);
 		
 		if (contadorFeliz > contadorTriste){
 			this.status= "satisfeito";
@@ -37,14 +37,16 @@ public class Mensagem {
 		return status;
 	}
 
-	public long contarRepetições(String s) {
+	public Integer contarRepetições(String s) {
 
 		Pattern pattern = Pattern.compile(s);
 		Matcher matcher = pattern.matcher(this.mensagem);
-
-		return matcher.results().count();
+		
+		int i = 0;
+		
+		while (matcher.find()) {
+				i++;
+		}
+		return i;
 	}
-
-
-
 }

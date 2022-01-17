@@ -13,8 +13,6 @@ public class Produto     {
 	private Double desconto;
 	private Date dataInicio;
 
-
-
 	public Produto(int id, String nome, String descricao, Double desconto, Date dataInicio) {
 		super();
 		this.id  = id;
@@ -52,25 +50,23 @@ public class Produto     {
 
 		Produto produto = new Produto(id, nome,desc,desconto, dataFormatada);
 		dao.salvar(produto);
-
 	}
-
 
 	public static void autoGenerate(ProdutoDAO dao) throws SQLException {
 
 		System.out.println("Gerando três produtos automaticamente...");
 		Random random = new Random();
-		int randomId;
 
 		for (int i = 0; i<3; i++) {
-			randomId = random.nextInt(1000);
+			int randomId = random.nextInt(1000);
+			double randomDesconto= random.nextDouble(100.00);
 			if(!dao.validarId(randomId)) {
 				dao.salvar(new Produto(
 						randomId,
 						"nomeAuto",
 						"descAuto",
-						0.0,
-						new Date(randomId)));
+						randomDesconto,
+						new Date(0)));
 				System.out.println("Produto gerado automaticamente id: "+randomId);
 			}else {				
 				System.out.println("ID repetido na geração automática de produtos"+ "(" +"ID:" +randomId + "), crindo novamente...");
@@ -112,8 +108,5 @@ public class Produto     {
 	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
 	}
-
-
-
 
 }
